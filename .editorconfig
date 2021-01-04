@@ -1,0 +1,30 @@
+# Editor configuration, see https://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.ts]
+ij_typescript_function_expression_brace_style = next_line_if_wrapped
+ij_typescript_method_brace_style = next_line_if_wrapped
+ij_any_class_brace_style = next_line
+ij_any_block_brace_style = next_line
+ij_any_method_brace_style = next_line
+ij_any_else_on_new_line = true
+ij_any_catch_on_new_line = true
+ij_any_finally_on_new_line = true
+ij_any_spaces_within_brackets = false
+ij_any_spaces_within_braces = false
+ij_any_spaces_within_parentheses = false
+ij_any_keep_simple_blocks_in_one_line = true
+ij_any_keep_simple_methods_in_one_line = true
+ij_typescript_use_double_quotes = false
+ij_typescript_force_quote_style = true
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
