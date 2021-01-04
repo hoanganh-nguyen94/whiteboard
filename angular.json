@@ -135,5 +135,8 @@
       }
     }
   },
-  "defaultProject": "dnd-whiteboard"
+  "defaultProject": "dnd-whiteboard",
+  "cli": {
+    "analytics": false
+  }
 }
