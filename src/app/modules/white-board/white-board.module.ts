@@ -4,10 +4,14 @@ import {CommonModule} from '@angular/common';
 import {WhiteBoardRouting} from './white-board.routing';
 import {WhiteBoardComponent} from './white-board.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {DragImageDirective} from '../directives/drag-image.directive';
 
 
 @NgModule({
-  declarations: [WhiteBoardComponent],
+  declarations: [
+    WhiteBoardComponent,
+    DragImageDirective
+  ],
   imports: [
     CommonModule,
     WhiteBoardRouting,

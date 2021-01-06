@@ -1,34 +1,45 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {CdkDragDrop, CdkDragEnter} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, CdkDragMove} from '@angular/cdk/drag-drop';
 import {WhiteBoardConfigurationService} from './white-board-configuration.service';
-import {loadImage} from 'canvas';
+import {fabric} from 'fabric';
 
 @Component({
   selector: 'app-white-board',
   template: `
     <div class="flex-container">
-      <div class="item-list"
-           cdkDropList
-           #todoList="cdkDropList">
-        <div class="item">
-          <img
-            src="../../../assets/a3.png"
-            alt=""
-            cdkDrag
-            (cdkDragReleased)="dragEnter($event)">
+      <div
+        class="item-list"
+        cdkDropList
+        [cdkDropListConnectedTo]="dropZone"
+      >
+        <div
+          class="item"
+          cdkDrag
+          [cdkDragData]="'Image'"
+          (cdkDragMoved)="moved($event)"
+        >
+          <h3 class="margin-bottom-0">Text</h3>
+        </div>
+
+        <div
+          class="item"
+          cdkDrag
+          [cdkDragData]="'Image'"
+          (cdkDragMoved)="moved($event)"
+        >
+          <h3 class="margin-bottom-0">Circle</h3>
         </div>
       </div>
 
       <div
+        class="boundary drop-zone"
+        #dropZone="cdkDropList"
         cdkDropList
-        class="boundary"
-        (cdkDropListDropped)="drop($event)"
-        (cdkDropListEntered)="enterList($event)"
+        [cdkDropListSortingDisabled]="true"
+        (cdkDropListDropped)="itemDropped($event)"
       >
         <canvas
-          #whiteBoard
-          [width]="configuration.whiteBoardEleWidth"
-          [height]="configuration.whiteBoardEleHeight">
+          #whiteBoard>
         </canvas>
       </div>
     </div>
@@ -37,32 +48,45 @@ import {loadImage} from 'canvas';
 })
 export class WhiteBoardComponent implements OnInit
 {
-
   @ViewChild('whiteBoard', {static: true}) private wbEl: ElementRef<HTMLCanvasElement>;
 
-  ctx: CanvasRenderingContext2D;
+  canvas: fabric.Canvas;
+  droppedItems: any[];
+
+  types = [
+    {text: 'text'}
+  ];
+
+  fields: any[] = [];
+
+  // tslint:disable-next-line:variable-name
+  _currentIndex;
+  // tslint:disable-next-line:variable-name
+  _currentField;
+  // tslint:disable-next-line:variable-name
+  _pointerPosition;
+
 
   constructor(public configuration: WhiteBoardConfigurationService) { }
 
   ngOnInit(): void {
-    this.ctx = this.wbEl.nativeElement.getContext('2d');
+    this.canvas = new fabric.Canvas(this.wbEl.nativeElement, {
+      width: this.configuration.whiteBoardEleWidth,
+      height: this.configuration.whiteBoardEleHeight
+    });
   }
 
-  drop(evt: CdkDragDrop<any>): void {
-    console.log(evt);
+
+  moved(event: CdkDragMove): void {
+    this._pointerPosition = event.pointerPosition;
   }
 
-  enterList(evt: CdkDragEnter<any>): void {
-    console.log(evt);
+  itemDropped(event: CdkDragDrop<any>): void {
+    // fabric.Image.fromURL('../../../assets/a3.png', (img) => this.canvas.add(img), {
+    //   top: this._pointerPosition.y - this.wbEl.nativeElement.getBoundingClientRect().top,
+    //   left: this._pointerPosition.x - this.wbEl.nativeElement.getBoundingClientRect().left,
+    // });
+
   }
 
-  dragEnter(evt: CdkDragEnter<any>) {
-    this.addImage();
-  }
-
-  async addImage() {
-    // const imgSrc: any = await loadImage('https://picsum.photos/200/300');
-    const imgSrc: any = await loadImage('../../../assets/a3.png');
-    this.ctx.drawImage(imgSrc, 0, 0, 200, 200);
-  }
 }

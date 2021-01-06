@@ -41,5 +41,11 @@
 }
 
 .item {
-  width: 200px;
+  border: 1px solid #5e5d5d;
+  text-align: center;
+  margin-bottom: 10px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
